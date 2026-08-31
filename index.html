@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>O12 Trainingsplan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Karla:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+  :root{
+    --ground:#F5F8F7;
+    --surface:#FFFFFF;
+    --surface-2:#EEF4F3;
+    --ink:#12262A;
+    --ink-soft:#4B6469;
+    --accent:#0E7C86;
+    --accent-ink:#FFFFFF;
+    --accent-2:#DB8E2E;
+    --line:#D8E6E3;
+    --good:#2E8B57;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#0A1719;
+      --surface:#122A2D;
+      --surface-2:#173235;
+      --ink:#E7F2F0;
+      --ink-soft:#93AEB0;
+      --accent:#54C6D1;
+      --accent-ink:#08181A;
+      --accent-2:#F0B65C;
+      --line:#20393D;
+      --good:#57C285;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0A1719;
+    --surface:#122A2D;
+    --surface-2:#173235;
+    --ink:#E7F2F0;
+    --ink-soft:#93AEB0;
+    --accent:#54C6D1;
+    --accent-ink:#08181A;
+    --accent-2:#F0B65C;
+    --line:#20393D;
+    --good:#57C285;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--ground);
+    color:var(--ink);
+    font-family:'Karla',system-ui,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.label-face{
+    font-family:'Barlow Semi Condensed',system-ui,sans-serif;
+    letter-spacing:.01em;
+    text-wrap:balance;
+  }
+  .mono{ font-family:'IBM Plex Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums; }
+
+  a{color:var(--accent);}
+
+  /* header */
+  .band{
+    position:relative;
+    padding:28px clamp(16px,4vw,40px) 22px;
+    background:
+      repeating-linear-gradient(180deg, color-mix(in srgb, var(--accent) 7%, transparent) 0 3px, transparent 3px 26px),
+      linear-gradient(180deg, var(--surface-2), var(--ground));
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .band-inner{ max-width:920px; margin:0 auto; position:relative; }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    color:var(--accent);
+    margin:0 0 6px;
+  }
+  h1{ font-size:clamp(1.8rem,5vw,2.5rem); font-weight:700; margin:0 0 6px; }
+  .sub{ color:var(--ink-soft); font-size:.98rem; max-width:60ch; }
+
+  /* tabs */
+  .tabbar{
+    max-width:920px; margin:18px auto 0;
+    padding:0 clamp(16px,4vw,40px);
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .tab{
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-weight:600; font-size:1rem;
+    padding:9px 18px;
+    border:1px solid var(--line);
+    background:var(--surface);
+    color:var(--ink-soft);
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .tab[aria-selected="true"]{
+    background:var(--accent); color:var(--accent-ink); border-color:var(--accent);
+  }
+  .tab:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  main{ max-width:920px; margin:0 auto; padding:24px clamp(16px,4vw,40px) 60px; }
+  .panel[hidden]{ display:none; }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px 20px;
+  }
+  .stack{ display:flex; flex-direction:column; gap:16px; }
+  .row-wrap{ display:flex; flex-wrap:wrap; gap:10px; }
+
+  .chip{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.75rem;
+    padding:4px 10px;
+    border-radius:999px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+  }
+  .chip.today{ background:var(--accent-2); color:#241300; border-color:var(--accent-2); font-weight:600; }
+  button.chip{ font:inherit; -webkit-appearance:none; appearance:none; }
+  .week-dates button.chip{ cursor:pointer; }
+  .week-dates button.chip:hover{ border-color:var(--accent); color:var(--accent); }
+  .week-dates button.chip:focus-visible{ outline:2px solid var(--accent-2); outline-offset:2px; }
+
+  h2.section-title{ font-size:1.4rem; margin:0 0 4px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .section-note{ color:var(--ink-soft); font-size:.92rem; margin:0 0 18px; }
+
+  /* session nav */
+  .session-nav{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+  .session-nav-mid{ display:flex; align-items:center; gap:10px; flex:1; justify-content:center; flex-wrap:wrap; }
+  .session-select{
+    font-family:'IBM Plex Mono',monospace; font-size:.8rem;
+    background:var(--surface-2); color:var(--ink); border:1px solid var(--line); border-radius:8px;
+    padding:7px 10px; max-width:min(320px,70vw);
+  }
+  .session-count{ color:var(--ink-soft); font-size:.82rem; }
+  .nav-btn{ width:38px; height:38px; padding:0; display:flex; align-items:center; justify-content:center; font-size:1.1rem; border-radius:8px; }
+  .nav-btn:disabled{ opacity:.35; cursor:default; }
+
+  /* today timeline */
+  .timeline{ display:flex; flex-direction:column; }
+  .tl-item{ display:grid; grid-template-columns:78px 1fr; gap:14px; padding:14px 0; border-top:1px solid var(--line); }
+  .tl-item:first-child{ border-top:none; }
+  .tl-time{ font-family:'IBM Plex Mono',monospace; font-size:.85rem; color:var(--accent); font-variant-numeric:tabular-nums; padding-top:2px; }
+  .tl-body h3{ margin:0 0 4px; font-size:1.1rem; font-weight:600; }
+  .tl-body p{ margin:0; color:var(--ink-soft); font-size:.94rem; }
+  .tl-tag{ display:inline-block; margin-top:6px; font-size:.72rem; font-family:'IBM Plex Mono',monospace; color:var(--ink-soft); }
+
+  .materiaal ul{ margin:6px 0 0; padding-left:1.1em; color:var(--ink-soft); font-size:.92rem; }
+  .materiaal li{ margin-bottom:2px; }
+
+  /* month grid */
+  .weeks{ display:flex; flex-direction:column; gap:14px; }
+  .week-card{ border:1px solid var(--line); border-radius:14px; padding:16px 18px; background:var(--surface); }
+  .week-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
+  .week-head h3{ margin:0; font-size:1.2rem; }
+  .week-dates{ display:flex; gap:8px; }
+  .week-focus{ color:var(--ink-soft); font-size:.92rem; margin:0 0 8px; }
+  .week-points{ margin:0; padding-left:1.1em; font-size:.92rem; }
+  .week-points li{ margin-bottom:2px; }
+  .beyond{ text-align:center; color:var(--ink-soft); font-size:.88rem; padding-top:4px; }
+
+  /* spelers */
+  .toolbar{ display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+  .btn{
+    font-family:'Barlow Semi Condensed',sans-serif; font-weight:600; font-size:.95rem;
+    background:var(--accent); color:var(--accent-ink); border:none; border-radius:8px;
+    padding:9px 16px; cursor:pointer;
+  }
+  .btn:focus-visible{ outline:2px solid var(--accent-2); outline-offset:2px; }
+  .btn.ghost{ background:transparent; color:var(--accent); border:1px solid var(--line); }
+  #save-status{ font-family:'IBM Plex Mono',monospace; font-size:.78rem; color:var(--ink-soft); min-height:1.2em; }
+
+  .table-scroll{ overflow-x:auto; border:1px solid var(--line); border-radius:14px; }
+  table.players{ border-collapse:collapse; width:100%; min-width:900px; background:var(--surface); }
+  table.players th{
+    font-family:'Barlow Semi Condensed',sans-serif; font-weight:600; font-size:.82rem;
+    text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft);
+    text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); background:var(--surface-2);
+    white-space:nowrap;
+  }
+  table.players td{ padding:8px 12px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  table.players tr:last-child td{ border-bottom:none; }
+  table.players th:first-child, table.players td:first-child{
+    position:sticky; left:0; background:var(--surface); z-index:1; box-shadow:1px 0 0 var(--line);
+  }
+  table.players th:first-child{ background:var(--surface-2); }
+
+  .name-input, .notes-input{
+    font-family:'Karla',sans-serif; font-size:.92rem; color:var(--ink);
+    background:transparent; border:1px solid transparent; border-radius:6px;
+    padding:5px 6px; width:100%;
+  }
+  .name-input{ min-width:110px; font-weight:700; }
+  .notes-input{ min-width:140px; }
+  .name-input:hover, .notes-input:hover{ border-color:var(--line); }
+  .name-input:focus, .notes-input:focus{ border-color:var(--accent); outline:none; background:var(--surface-2); }
+
+  select.team-select{
+    font-family:'IBM Plex Mono',monospace; font-size:.78rem;
+    background:var(--surface-2); color:var(--ink); border:1px solid var(--line); border-radius:6px;
+    padding:5px 6px;
+  }
+
+  .pipgroup{ display:flex; gap:3px; }
+  .pip{
+    width:14px; height:14px; border-radius:50%;
+    border:1px solid var(--accent); background:transparent; padding:0; cursor:pointer;
+  }
+  .pip.filled{ background:var(--accent); }
+  .pip:focus-visible{ outline:2px solid var(--accent-2); outline-offset:2px; }
+
+  .remove-btn{
+    background:none; border:none; color:var(--ink-soft); cursor:pointer; font-size:1rem; line-height:1;
+    padding:4px;
+  }
+  .remove-btn:hover{ color:#C4453B; }
+
+  .legend{ margin-top:14px; font-size:.82rem; color:var(--ink-soft); }
+  .legend .pipgroup{ display:inline-flex; vertical-align:middle; margin:0 4px; }
+
+  footer{ text-align:center; color:var(--ink-soft); font-size:.8rem; padding:20px 0 40px; }
+</style>
+</head>
+<body>
+
+<div class="band">
+  <div class="band-inner">
+    <p class="eyebrow">O12&#8209;2 &amp; O12&#8209;3 &middot; seizoen 2026&#8209;2027</p>
+    <h1>Trainingsplan &amp; spelersvolgsysteem</h1>
+    <p class="sub">Twee vaste trainingen per week &mdash; dinsdag 18:00&ndash;18:45 en zaterdag 07:30&ndash;08:30, 25m bad, elk team 2 banen. Grootste deel van de groep speelt dit seizoen voor het eerst competitie.</p>
+  </div>
+</div>
+
+<div class="tabbar" role="tablist" aria-label="Onderdelen">
+  <button class="tab" id="tab-btn-training" role="tab" aria-selected="true" aria-controls="panel-training">Trainingen</button>
+  <button class="tab" id="tab-btn-maand" role="tab" aria-selected="false" aria-controls="panel-maand">Maandplanning</button>
+  <button class="tab" id="tab-btn-spelers" role="tab" aria-selected="false" aria-controls="panel-spelers">Spelers &amp; voortgang</button>
+</div>
+
+<main>
+
+  <section class="panel" id="panel-training" role="tabpanel" aria-labelledby="tab-btn-training">
+    <div class="session-nav">
+      <button type="button" class="btn ghost nav-btn" id="session-prev" aria-label="Vorige training">&larr;</button>
+      <div class="session-nav-mid">
+        <select id="session-select" class="session-select" aria-label="Kies een training"></select>
+        <span class="session-count mono" id="session-count"></span>
+      </div>
+      <button type="button" class="btn ghost nav-btn" id="session-next" aria-label="Volgende training">&rarr;</button>
+    </div>
+
+    <div id="session-content"></div>
+  </section>
+
+  <section class="panel" id="panel-maand" role="tabpanel" aria-labelledby="tab-btn-maand" hidden>
+    <h2 class="section-title">September &middot; 4 weken, 8 trainingen</h2>
+    <p class="section-note">Opbouw van conditie en losse vaardigheden naar samenspel en wedstrijdvorm, richting het eerste competitieseizoen.</p>
+
+    <div class="weeks">
+      <div class="week-card">
+        <div class="week-head">
+          <h3>Week 1 &middot; Terug in het water</h3>
+          <div class="week-dates"><button type="button" class="chip" data-date="2026-09-01">Di 1 sep</button><button type="button" class="chip" data-date="2026-09-05">Za 5 sep</button></div>
+        </div>
+        <p class="week-focus">Conditie opbouwen, wennen aan de bal.</p>
+        <ul class="week-points">
+          <li>Zwemconditie: rustig opbouwend, geen sprintwerk in de eerste les</li>
+          <li>Watertrappen (eggbeater) en balgewenning</li>
+          <li>Passen/vangen met &eacute;&eacute;n hand, stilstaand</li>
+        </ul>
+      </div>
+
+      <div class="week-card">
+        <div class="week-head">
+          <h3>Week 2 &middot; Zwemtechniek &amp; bal onder controle</h3>
+          <div class="week-dates"><button type="button" class="chip" data-date="2026-09-08">Di 8 sep</button><button type="button" class="chip" data-date="2026-09-12">Za 12 sep</button></div>
+        </div>
+        <p class="week-focus">Crawl met hoofd boven water, passen onder lichte druk.</p>
+        <ul class="week-points">
+          <li>Crawl met kijkslag (hoofd boven water) inslijpen</li>
+          <li>Passen/vangen bewegend, met lichte druk van een tegenstander</li>
+          <li>Eerste kleine partijvorm 3v3, zonder doel</li>
+        </ul>
+      </div>
+
+      <div class="week-card">
+        <div class="week-head">
+          <h3>Week 3 &middot; Positiespel &amp; samenspel</h3>
+          <div class="week-dates"><button type="button" class="chip" data-date="2026-09-15">Di 15 sep</button><button type="button" class="chip" data-date="2026-09-19">Za 19 sep</button></div>
+        </div>
+        <p class="week-focus">Basisprincipes aanvallen/verdedigen, schieten introduceren.</p>
+        <ul class="week-points">
+          <li>Driehoeksopstelling en ruimte zoeken in balbezit</li>
+          <li>Basisverdediging: mandekking op eigen speler</li>
+          <li>Schottechniek introduceren met doeltjes</li>
+        </ul>
+      </div>
+
+      <div class="week-card">
+        <div class="week-head">
+          <h3>Week 4 &middot; Wedstrijdvorm &amp; spelinzicht</h3>
+          <div class="week-dates"><button type="button" class="chip" data-date="2026-09-22">Di 22 sep</button><button type="button" class="chip" data-date="2026-09-26">Za 26 sep</button></div>
+        </div>
+        <p class="week-focus">Partijvormen met doel, regels herhalen richting competitie.</p>
+        <ul class="week-points">
+          <li>Partijtjes met doeltjes, volledige spelregels toepassen</li>
+          <li>Basisregels herhalen: uitsluiting, vrije worp</li>
+          <li>Evaluatiemoment per speler op basis van de tracker</li>
+        </ul>
+      </div>
+    </div>
+    <p class="beyond">Daarna: overgang naar meer wedstrijdgerichte trainingen richting de eerste competitiewedstrijden.</p>
+  </section>
+
+  <section class="panel" id="panel-spelers" role="tabpanel" aria-labelledby="tab-btn-spelers" hidden>
+    <h2 class="section-title">Spelers &amp; voortgang</h2>
+    <p class="section-note">Vul namen in tijdens of na de training. Wijzigingen worden lokaal in deze browser bewaard (localStorage) &mdash; open het bestand steeds vanaf dezelfde computer/browser om je gegevens terug te zien.</p>
+
+    <div class="toolbar">
+      <button class="btn" id="add-player">+ Speler toevoegen</button>
+      <span id="save-status"></span>
+    </div>
+
+    <div class="table-scroll">
+      <table class="players">
+        <thead>
+          <tr>
+            <th>Naam</th>
+            <th>Team</th>
+            <th>Conditie</th>
+            <th>Watertr.</th>
+            <th>Passen</th>
+            <th>Schieten</th>
+            <th>Notities</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="players-body"></tbody>
+      </table>
+    </div>
+
+    <p class="legend">
+      Niveau per vaardigheid: <span class="pipgroup"><span class="pip"></span><span class="pip"></span><span class="pip"></span></span> leeg = nog niet gestart &middot; <span class="pipgroup"><span class="pip filled"></span><span class="pip"></span><span class="pip"></span></span> 1 = leert de basis &middot; <span class="pipgroup"><span class="pip filled"></span><span class="pip filled"></span><span class="pip"></span></span> 2 = oefent goed mee &middot; <span class="pipgroup"><span class="pip filled"></span><span class="pip filled"></span><span class="pip filled"></span></span> 3 = beheerst dit. Klik op een bolletje om het niveau te zetten, klik nogmaals op dezelfde om een niveau terug te gaan.
+    </p>
+  </section>
+
+</main>
+
+<footer>O12&#8209;2 &amp; O12&#8209;3 &middot; trainingsplan september 2026</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var SKILLS = ["conditie","watertrappen","passen","schieten"];
+  var LEVELS = 3;
+
+  var SESSION_PLANS = [
+    {
+      date:"2026-09-01", label:"Di 1/9", time:"18:00–18:45", weekTheme:"Terug in het water",
+      note:"Eerste training na de zomerstop. 12 aanmeldingen, 4 banen beschikbaar (2 per team) → groepjes van 3 per baan, gemengd O12-2/O12-3. Focus: conditie opbouwen en weer wennen aan het water, rustig opbouwen in intensiteit.",
+      materials:["4 waterpoloballen (1 per baangroepje)","Geen doeltjes deze les — komen terug in week 3","Cappen niet strikt nodig, wel handig voor teamherkenning"],
+      blocks:[
+        {time:"18:00", title:"Verzamelen & briefing", desc:"Kort op de kant: seizoensdoel benoemen (voor de meesten eerste competitieseizoen), indeling in baangroepjes van 3, gemengd tussen O12-2 en O12-3.", tag:"5 min · op de kant"},
+        {time:"18:05", title:"Warming-up zwemmen", desc:"Continu rustig zwemmen op eigen tempo, wisselend crawl en rugslag — de volle 10 minuten in beweging, geen wedstrijdje (richtlijn: zo'n 6-8 baanlengtes per speler). Laatste 2 minuten iets pittiger. Nog geen sprints — eerste week terug, rustig opbouwen.", tag:"10 min · alle 4 banen tegelijk"},
+        {time:"18:15", title:"Watertrappen & waterpolo-conditie", desc:"4× 1 min watertrappen met handen uit het water (eggbeater), 30 sec rust ertussen. Afsluiten met 3× sprint van 5m vanuit watertrap-positie.", tag:"10 min · per baan"},
+        {time:"18:25", title:"Bal-gewenning & passen", desc:"Groepjes van 3 per baan, driehoek passen/vangen met één hand. Opbouwen van stilstaand naar bewegend passen. Let op: bal droog vasthouden, niet met twee handen.", tag:"15 min · 1 bal per groepje"},
+        {time:"18:40", title:"Afsluiter & afronden", desc:"Korte estafette met bal tussen de baangroepjes — leuk en licht competitief. Materiaal opruimen, kort verzamelen en volgende training aankondigen.", tag:"5 min"}
+      ]
+    },
+    {
+      date:"2026-09-05", label:"Za 5/9", time:"07:30–08:30", weekTheme:"Terug in het water",
+      note:"Tweede training van de week, 60 minuten. Bouw voort op dinsdag: iets meer volume in zwemmen en watertrappen, plus de eerste kleine partijvorm zonder doel.",
+      materials:["4 waterpoloballen","Geen doeltjes","Eventueel een boei/plankje voor wie moeite heeft met watertrappen"],
+      blocks:[
+        {time:"07:30", title:"Verzamelen & terugblik", desc:"Korte terugblik op dinsdag: wat ging goed, wat moet beter. Indeling baangroepjes.", tag:"5 min · op de kant"},
+        {time:"07:35", title:"Warming-up zwemmen", desc:"Continu zwemmen op eigen tempo, wisselend crawl en rugslag, de volle 15 minuten in beweging (richtlijn: 8-10 baanlengtes per speler). Laatste 2 minuten pittiger, afsluiten met kort starten/duiken oefenen vanaf de kant.", tag:"15 min · alle 4 banen tegelijk"},
+        {time:"07:50", title:"Watertrappen", desc:"4× 1 min eggbeater + sprint 5m, iets langer volgehouden dan dinsdag. Focus op handen boven water houden.", tag:"10 min · per baan"},
+        {time:"08:00", title:"Bal-gewenning & passen bewegend", desc:"Driehoek passen terwijl je meezwemt, introductie schouderpass (bal los van het water gooien).", tag:"15 min · 1 bal per groepje"},
+        {time:"08:15", title:"Kleine partijvorm 2v2", desc:"Zonder doel, alleen balbezit vasthouden — eerste gevoel bij positiespel en druk van een tegenstander.", tag:"10 min · 2 groepjes per baan"},
+        {time:"08:25", title:"Afkoelen & evaluatie", desc:"Rustig uitzwemmen, korte evaluatie van week 1 met de groep.", tag:"5 min"}
+      ]
+    },
+    {
+      date:"2026-09-08", label:"Di 8/9", time:"18:00–18:45", weekTheme:"Zwemtechniek & bal onder controle",
+      note:"Focus op kijkslag (crawl met hoofd boven water, belangrijk voor overzicht) en passen onder lichte druk.",
+      materials:["4 waterpoloballen","Geen doeltjes"],
+      blocks:[
+        {time:"18:00", title:"Verzamelen & uitleg kijkslag", desc:"Kort uitleggen wat kijkslag is en waarom het bij waterpolo belangrijk is (overzicht houden op het spel).", tag:"5 min · op de kant"},
+        {time:"18:05", title:"Warming-up met techniekfocus", desc:"Continu crawl zwemmen met nadruk op hoofdhouding (kijkslag), de volle 10 minuten in beweging (richtlijn: 6-8 baanlengtes). Coach loopt mee langs de kant voor feedback.", tag:"10 min · alle 4 banen tegelijk"},
+        {time:"18:15", title:"Watertrappen & sprintvariatie", desc:"3× 1 min eggbeater + 2× sprint van 5m, opbouwend tempo.", tag:"10 min · per baan"},
+        {time:"18:25", title:"Passen/vangen onder lichte druk", desc:"Groepjes van 3: één speler probeert de pass te onderscheppen (lichte druk), rouleren van rol.", tag:"15 min · 1 bal per groepje"},
+        {time:"18:40", title:"Afsluiter: kleine partij 3v3", desc:"Zonder doel, focus op het passen onder druk toepassen dat net geoefend is.", tag:"5 min"}
+      ]
+    },
+    {
+      date:"2026-09-12", label:"Za 12/9", time:"07:30–08:30", weekTheme:"Zwemtechniek & bal onder controle",
+      note:"Langere warming-up met kijkslag-drills, passen onder druk en de eerste partijvorm van 3 tegen 3.",
+      materials:["4 waterpoloballen","Geen doeltjes"],
+      blocks:[
+        {time:"07:30", title:"Verzamelen", desc:"Kort de focus van vandaag benoemen: kijkslag en passen onder druk.", tag:"5 min · op de kant"},
+        {time:"07:35", title:"Warming-up met kijkslag-drills", desc:"Continu zwemmen de volle 15 minuten (richtlijn: 8-10 baanlengtes), om de 2 lengtes wisselen tussen kijkslag-crawl en normale crawl.", tag:"15 min · alle 4 banen tegelijk"},
+        {time:"07:50", title:"Watertrappen conditie", desc:"4× 1 min eggbeater + sprint van 5m.", tag:"10 min · per baan"},
+        {time:"08:00", title:"Passen onder druk & positie kiezen", desc:"Driehoek/vierhoek passen met 1 verdediger, na elke pass van positie wisselen.", tag:"15 min · 1 bal per groepje"},
+        {time:"08:15", title:"Partijvorm 3v3", desc:"Zonder doel, focus op ruimte zoeken in balbezit.", tag:"10 min · 2 groepjes per baan"},
+        {time:"08:25", title:"Afsluiten", desc:"Rustig uitzwemmen, korte terugkoppeling.", tag:"5 min"}
+      ]
+    },
+    {
+      date:"2026-09-15", label:"Di 15/9", time:"18:00–18:45", weekTheme:"Positiespel & samenspel",
+      note:"Introductie van de driehoeksopstelling en de eerste schottechniek met de doeltjes.",
+      materials:["4 waterpoloballen","2 doeltjes (nieuw deze week)"],
+      blocks:[
+        {time:"18:00", title:"Verzamelen & uitleg driehoeksopstelling", desc:"Kort uitleggen hoe je als drietal ruimte creëert in balbezit.", tag:"5 min · op de kant"},
+        {time:"18:05", title:"Warming-up zwemmen", desc:"Continu zwemmen op gemiddeld tempo, de volle 10 minuten (richtlijn: 6-8 baanlengtes per speler).", tag:"10 min · alle 4 banen tegelijk"},
+        {time:"18:15", title:"Positiespel: ruimte zoeken", desc:"Eerst 3v0 (zonder verdediger) de opstelling oefenen, daarna 3v1 met een lichte verdediger.", tag:"10 min · per baan"},
+        {time:"18:25", title:"Schottechniek introductie", desc:"Droog schot op de kant tonen, dan vanuit het water op de doeltjes. Focus op techniek, niet op kracht.", tag:"15 min · 2 doeltjes"},
+        {time:"18:40", title:"Afsluiter", desc:"Korte partij met doel, toepassen van het geoefende schot.", tag:"5 min"}
+      ]
+    },
+    {
+      date:"2026-09-19", label:"Za 19/9", time:"07:30–08:30", weekTheme:"Positiespel & samenspel",
+      note:"Basisverdediging (mandekking) erbij, schieten vanuit posities en de eerste partijvorm met doel.",
+      materials:["4 waterpoloballen","2 doeltjes","Cappen handig voor het herkennen van verdedigingsparen"],
+      blocks:[
+        {time:"07:30", title:"Verzamelen", desc:"Focus van vandaag benoemen: verdedigen en schieten.", tag:"5 min · op de kant"},
+        {time:"07:35", title:"Warming-up zwemmen", desc:"Continu zwemmen de volle 15 minuten, wisselend crawl en rugslag (richtlijn: 8-10 baanlengtes per speler).", tag:"15 min · alle 4 banen tegelijk"},
+        {time:"07:50", title:"Mandekking basis", desc:"1-op-1 verdedigen: positie tussen bal en doel leren innemen.", tag:"15 min · in paren"},
+        {time:"08:05", title:"Schieten vanuit posities", desc:"Schieten vanaf verschillende hoeken op de doeltjes.", tag:"15 min · 2 doeltjes"},
+        {time:"08:20", title:"Partijvorm met doel", desc:"Kleine partij waarin het geleerde direct wordt toegepast.", tag:"8 min"},
+        {time:"08:28", title:"Afsluiten", desc:"Kort verzamelen en materiaal opruimen.", tag:"2 min"}
+      ]
+    },
+    {
+      date:"2026-09-22", label:"Di 22/9", time:"18:00–18:45", weekTheme:"Wedstrijdvorm & spelinzicht",
+      note:"Spelregels kort herhalen en een langere partijvorm met volledige regels spelen.",
+      materials:["4 waterpoloballen","2 doeltjes","Cappen (teams onderscheiden tijdens de partij)"],
+      blocks:[
+        {time:"18:00", title:"Verzamelen & regels herhalen", desc:"Kort de basisregels herhalen: uitsluiting en vrije worp.", tag:"5 min · op de kant"},
+        {time:"18:05", title:"Warming-up zwemmen", desc:"Continu zwemmen op gemiddeld tempo, de volle 10 minuten (richtlijn: 6-8 baanlengtes per speler).", tag:"10 min · alle 4 banen tegelijk"},
+        {time:"18:15", title:"Partijvorm met volledige regels", desc:"Kleine partij (afhankelijk van opkomst), coach fluit uitsluitingen zoals in een echte wedstrijd.", tag:"20 min · 2 doeltjes"},
+        {time:"18:35", title:"Evaluatie & afsluiten", desc:"Kort per speler een compliment en een aandachtspunt, gekoppeld aan de tracker.", tag:"10 min"}
+      ]
+    },
+    {
+      date:"2026-09-26", label:"Za 26/9", time:"07:30–08:30", weekTheme:"Wedstrijdvorm & spelinzicht",
+      note:"Laatste training van de maand: vrije worp en uitsluiting oefenen, gevolgd door een volledige wedstrijdsimulatie.",
+      materials:["4 waterpoloballen","2 doeltjes","Cappen","Fluitje, indien beschikbaar"],
+      blocks:[
+        {time:"07:30", title:"Verzamelen", desc:"Focus van vandaag benoemen: spelsituaties en wedstrijdsimulatie.", tag:"5 min · op de kant"},
+        {time:"07:35", title:"Warming-up zwemmen", desc:"Continu zwemmen de volle 15 minuten, wisselend crawl en rugslag (richtlijn: 8-10 baanlengtes per speler).", tag:"15 min · alle 4 banen tegelijk"},
+        {time:"07:50", title:"Vrije worp & uitsluiting oefenen", desc:"Herhaalde spelsituaties naspelen totdat de basisregels vertrouwd aanvoelen.", tag:"15 min"},
+        {time:"08:05", title:"Wedstrijdsimulatie", desc:"Volledige partij met tijd en wissels, zoals in een echte competitiewedstrijd.", tag:"20 min · 2 doeltjes"},
+        {time:"08:25", title:"Terugblik op de maand", desc:"Wat is er bereikt sinds 1 september, en een korte vooruitblik op volgende maand.", tag:"5 min"}
+      ]
+    }
+  ];
+
+  var state = null;
+  var saveTimer = null;
+  var currentSessionIndex = 0;
+  var STORAGE_KEY = "o12-trainingsplan-spelers-v2";
+
+  var ROSTER = [
+    ["Evy K","O12-2"], ["Finn","O12-2"], ["Quint","O12-2"], ["Jasmijn","O12-2"],
+    ["Lenthe","O12-2"], ["Jami","O12-2"], ["Lucas","O12-2"],
+    ["Fedde","O12-3"], ["Ilario","O12-3"], ["Levi","O12-3"], ["Jelte","O12-3"],
+    ["Nick","O12-3"], ["Jacky","O12-3"], ["Zoë","O12-3"], ["Evy B","O12-3"],
+    ["Sacha","O12-3"], ["Lila","O12-3"], ["Arash","O12-3"]
+  ];
+
+  function seedPlayers(){
+    return ROSTER.map(function(r, i){
+      var skills = {};
+      SKILLS.forEach(function(k){ skills[k] = 0; });
+      return {id:"p"+(i+1), name:r[0], team:r[1], skills:skills, notes:""};
+    });
+  }
+
+  function esc(s){
+    return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        var data = JSON.parse(raw);
+        if(data && Array.isArray(data.players)) return data;
+      }
+    }catch(e){}
+    return {players: seedPlayers()};
+  }
+
+  function saveState(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      setStatus("Opgeslagen ✓");
+    }catch(e){
+      setStatus("Opslaan mislukt (lokale opslag niet beschikbaar)");
+    }
+    if(saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ setStatus(""); }, 2000);
+  }
+
+  function pipgroupHtml(playerId, skill, level){
+    var out = "";
+    for(var i=1;i<=LEVELS;i++){
+      out += '<button type="button" class="pip'+(i<=level?' filled':'')+'" data-player="'+playerId+'" data-skill="'+skill+'" data-level="'+i+'" title="Niveau '+i+'" aria-label="'+skill+' niveau '+i+'"></button>';
+    }
+    return '<div class="pipgroup">'+out+'</div>';
+  }
+
+  function rowHtml(player){
+    var teamOpts = ["", "O12-2", "O12-3"].map(function(t){
+      return '<option value="'+t+'"'+(player.team===t?" selected":"")+'>'+(t===""?"–":t)+'</option>';
+    }).join("");
+    return (
+      '<tr data-row="'+player.id+'">' +
+      '<td><input class="name-input" type="text" placeholder="Naam" value="'+esc(player.name)+'" data-player="'+player.id+'" data-field="name"></td>' +
+      '<td><select class="team-select" data-player="'+player.id+'" data-field="team">'+teamOpts+'</select></td>' +
+      '<td>'+pipgroupHtml(player.id,"conditie",player.skills.conditie)+'</td>' +
+      '<td>'+pipgroupHtml(player.id,"watertrappen",player.skills.watertrappen)+'</td>' +
+      '<td>'+pipgroupHtml(player.id,"passen",player.skills.passen)+'</td>' +
+      '<td>'+pipgroupHtml(player.id,"schieten",player.skills.schieten)+'</td>' +
+      '<td><input class="notes-input" type="text" placeholder="&hellip;" value="'+esc(player.notes)+'" data-player="'+player.id+'" data-field="notes"></td>' +
+      '<td><button type="button" class="remove-btn" data-remove="'+player.id+'" title="Verwijder speler">&times;</button></td>' +
+      '</tr>'
+    );
+  }
+
+  function renderRows(){
+    document.getElementById("players-body").innerHTML = state.players.map(rowHtml).join("");
+  }
+
+  function setStatus(text){
+    document.getElementById("save-status").textContent = text;
+  }
+
+  function onTableInput(e){
+    var t = e.target;
+    var pid = t.getAttribute("data-player");
+    if(!pid) return;
+    var player = state.players.find(function(p){ return p.id === pid; });
+    if(!player) return;
+    var field = t.getAttribute("data-field");
+    if(field){
+      player[field] = t.value;
+      saveState();
+    }
+  }
+
+  function onTableClick(e){
+    var t = e.target;
+    if(t.classList.contains("pip")){
+      var pid = t.getAttribute("data-player");
+      var skill = t.getAttribute("data-skill");
+      var level = parseInt(t.getAttribute("data-level"), 10);
+      var player = state.players.find(function(p){ return p.id === pid; });
+      if(!player) return;
+      player.skills[skill] = (player.skills[skill] === level) ? level - 1 : level;
+      var group = t.parentElement;
+      Array.prototype.forEach.call(group.children, function(pipEl, idx){
+        pipEl.classList.toggle("filled", idx < player.skills[skill]);
+      });
+      saveState();
+      return;
+    }
+    var removeId = t.getAttribute("data-remove");
+    if(removeId){
+      state.players = state.players.filter(function(p){ return p.id !== removeId; });
+      renderRows();
+      saveState();
+    }
+  }
+
+  function onTableChange(e){
+    if(e.target.tagName === "SELECT"){
+      onTableInput(e);
+    }
+  }
+
+  function addPlayer(){
+    var n = state.players.length + 1;
+    var skills = {}; SKILLS.forEach(function(k){ skills[k] = 0; });
+    state.players.push({id:"p"+Date.now()+n, name:"", team:"", skills:skills, notes:""});
+    renderRows();
+    saveState();
+  }
+
+  var TABS = [
+    ["tab-btn-training","panel-training"],
+    ["tab-btn-maand","panel-maand"],
+    ["tab-btn-spelers","panel-spelers"]
+  ];
+
+  function showTab(tabId){
+    TABS.forEach(function(pair){
+      document.getElementById(pair[0]).setAttribute("aria-selected", pair[0] === tabId ? "true" : "false");
+      document.getElementById(pair[1]).hidden = pair[0] !== tabId;
+    });
+  }
+
+  function setupTabs(){
+    TABS.forEach(function(pair){
+      document.getElementById(pair[0]).addEventListener("click", function(){ showTab(pair[0]); });
+    });
+  }
+
+  function pad2(n){ return n < 10 ? "0"+n : ""+n; }
+
+  function todayISO(){
+    var d = new Date();
+    return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate());
+  }
+
+  function sessionTitle(s){
+    var d = new Date(s.date+"T00:00:00");
+    var weekday = d.toLocaleDateString("nl-NL", {weekday:"long"});
+    weekday = weekday.charAt(0).toUpperCase()+weekday.slice(1);
+    var dateStr = d.toLocaleDateString("nl-NL", {day:"numeric", month:"long"});
+    return weekday+" "+dateStr;
+  }
+
+  function defaultSessionIndex(){
+    var t = todayISO();
+    for(var i=0;i<SESSION_PLANS.length;i++){
+      if(SESSION_PLANS[i].date >= t) return i;
+    }
+    return SESSION_PLANS.length-1;
+  }
+
+  function renderSession(idx){
+    currentSessionIndex = Math.max(0, Math.min(SESSION_PLANS.length-1, idx));
+    var s = SESSION_PLANS[currentSessionIndex];
+    var t = todayISO();
+    var badge = "";
+    if(s.date === t){
+      badge = '<span class="chip today">Vandaag</span>';
+    }else if(currentSessionIndex === defaultSessionIndex()){
+      badge = '<span class="chip today">Eerstvolgende</span>';
+    }
+
+    var blocksHtml = s.blocks.map(function(b){
+      return '<div class="tl-item"><div class="tl-time">'+b.time+'</div><div class="tl-body"><h3>'+b.title+'</h3><p>'+b.desc+'</p><span class="tl-tag">'+b.tag+'</span></div></div>';
+    }).join("");
+
+    var materialsHtml = s.materials.map(function(m){ return '<li>'+m+'</li>'; }).join("");
+
+    document.getElementById("session-content").innerHTML =
+      '<h2 class="section-title">'+sessionTitle(s)+' &middot; '+s.time+' '+badge+'</h2>'+
+      '<p class="section-note">'+s.note+'</p>'+
+      '<div class="card"><div class="timeline">'+blocksHtml+'</div></div>'+
+      '<div class="card materiaal" style="margin-top:16px;"><h3 style="margin:0 0 4px; font-size:1rem;">Materiaal nodig</h3><ul>'+materialsHtml+'</ul></div>';
+
+    document.getElementById("session-select").value = String(currentSessionIndex);
+    document.getElementById("session-count").textContent = "Sessie "+(currentSessionIndex+1)+" van "+SESSION_PLANS.length;
+    document.getElementById("session-prev").disabled = currentSessionIndex === 0;
+    document.getElementById("session-next").disabled = currentSessionIndex === SESSION_PLANS.length-1;
+  }
+
+  function setupSessionNav(){
+    var selectEl = document.getElementById("session-select");
+    selectEl.innerHTML = SESSION_PLANS.map(function(s,i){
+      return '<option value="'+i+'">'+s.label+' — '+s.weekTheme+'</option>';
+    }).join("");
+    selectEl.addEventListener("change", function(e){ renderSession(parseInt(e.target.value,10)); });
+    document.getElementById("session-prev").addEventListener("click", function(){ renderSession(currentSessionIndex-1); });
+    document.getElementById("session-next").addEventListener("click", function(){ renderSession(currentSessionIndex+1); });
+  }
+
+  function setupMonthChips(){
+    var todayStr = todayISO();
+    var nextDate = SESSION_PLANS[defaultSessionIndex()].date;
+    document.querySelectorAll(".week-dates [data-date]").forEach(function(btn){
+      var d = btn.getAttribute("data-date");
+      if(d === todayStr || d === nextDate) btn.classList.add("today");
+    });
+    document.getElementById("panel-maand").addEventListener("click", function(e){
+      var btn = e.target.closest && e.target.closest("[data-date]");
+      if(!btn) return;
+      var idx = SESSION_PLANS.findIndex(function(s){ return s.date === btn.getAttribute("data-date"); });
+      if(idx >= 0){
+        showTab("tab-btn-training");
+        renderSession(idx);
+      }
+    });
+  }
+
+  function boot(){
+    setupTabs();
+    setupSessionNav();
+    setupMonthChips();
+    renderSession(defaultSessionIndex());
+
+    document.getElementById("add-player").addEventListener("click", addPlayer);
+    document.getElementById("players-body").addEventListener("input", onTableInput);
+    document.getElementById("players-body").addEventListener("click", onTableClick);
+    document.getElementById("players-body").addEventListener("change", onTableChange);
+
+    state = loadState();
+    renderRows();
+  }
+
+  document.addEventListener("DOMContentLoaded", boot);
+})();
+</script>
+</body>
+</html>
