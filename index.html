@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Karla:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <style>
   :root{
     --ground:#F5F8F7;
@@ -241,7 +243,7 @@
   <div class="band-inner">
     <p class="eyebrow">O12&#8209;2 &amp; O12&#8209;3 &middot; seizoen 2026&#8209;2027</p>
     <h1>Trainingsplan &amp; spelersvolgsysteem</h1>
-    <p class="sub">Twee vaste trainingen per week &mdash; dinsdag 18:00&ndash;18:45 en zaterdag 07:30&ndash;08:30, 25m bad, elk team 2 banen. Grootste deel van de groep speelt dit seizoen voor het eerst competitie.</p>
+    <p class="sub">Drie vaste trainingen per week &mdash; dinsdag 18:00&ndash;18:45 en zaterdag 07:30&ndash;08:30 (bal &amp; wedstrijdvorm), plus donderdag 18:00&ndash;19:00 zwemtraining (lange banen, geen bal/doeltjes). 25m bad, elk team 2 banen. Grootste deel van de groep speelt dit seizoen voor het eerst competitie.</p>
   </div>
 </div>
 
@@ -267,59 +269,63 @@
   </section>
 
   <section class="panel" id="panel-maand" role="tabpanel" aria-labelledby="tab-btn-maand" hidden>
-    <h2 class="section-title">September &middot; 4 weken, 8 trainingen</h2>
+    <h2 class="section-title">September &middot; 4 weken, 12 trainingen</h2>
     <p class="section-note">Opbouw van conditie en losse vaardigheden naar samenspel en wedstrijdvorm, richting het eerste competitieseizoen.</p>
 
     <div class="weeks">
       <div class="week-card">
         <div class="week-head">
           <h3>Week 1 &middot; Terug in het water</h3>
-          <div class="week-dates"><button type="button" class="chip" data-date="2026-09-01">Di 1 sep</button><button type="button" class="chip" data-date="2026-09-05">Za 5 sep</button></div>
+          <div class="week-dates"><button type="button" class="chip" data-date="2026-09-01">Di 1 sep</button><button type="button" class="chip" data-date="2026-09-03">Do 3 sep</button><button type="button" class="chip" data-date="2026-09-05">Za 5 sep</button></div>
         </div>
         <p class="week-focus">Conditie opbouwen, wennen aan de bal.</p>
         <ul class="week-points">
           <li>Zwemconditie: rustig opbouwend, geen sprintwerk in de eerste les</li>
           <li>Watertrappen (benen om-en-om) en balgewenning</li>
           <li>Passen/vangen met &eacute;&eacute;n hand, stilstaand</li>
+          <li>Donderdag: losse zwemtraining, lange banen, geen bal/doeltjes</li>
         </ul>
       </div>
 
       <div class="week-card">
         <div class="week-head">
           <h3>Week 2 &middot; Zwemtechniek &amp; bal onder controle</h3>
-          <div class="week-dates"><button type="button" class="chip" data-date="2026-09-08">Di 8 sep</button><button type="button" class="chip" data-date="2026-09-12">Za 12 sep</button></div>
+          <div class="week-dates"><button type="button" class="chip" data-date="2026-09-08">Di 8 sep</button><button type="button" class="chip" data-date="2026-09-10">Do 10 sep</button><button type="button" class="chip" data-date="2026-09-12">Za 12 sep</button></div>
         </div>
         <p class="week-focus">Crawl met hoofd boven water, passen onder lichte druk.</p>
         <ul class="week-points">
           <li>Polocrawl (hoofd boven water) inslijpen</li>
           <li>Passen/vangen bewegend, met lichte druk van een tegenstander</li>
           <li>Eerste kleine partijvorm 3v3, zonder doel</li>
+          <li>Donderdag: zwemtraining met polocrawl-intervallen, geen bal</li>
         </ul>
       </div>
 
       <div class="week-card">
         <div class="week-head">
           <h3>Week 3 &middot; Positiespel &amp; samenspel</h3>
-          <div class="week-dates"><button type="button" class="chip" data-date="2026-09-15">Di 15 sep</button><button type="button" class="chip" data-date="2026-09-19">Za 19 sep</button></div>
+          <div class="week-dates"><button type="button" class="chip" data-date="2026-09-15">Di 15 sep</button><button type="button" class="chip" data-date="2026-09-17">Do 17 sep</button><button type="button" class="chip" data-date="2026-09-19">Za 19 sep</button></div>
         </div>
         <p class="week-focus">Basisprincipes aanvallen/verdedigen, schieten introduceren.</p>
         <ul class="week-points">
           <li>Driehoeksopstelling en ruimte zoeken in balbezit</li>
           <li>Basisverdediging: mandekking op eigen speler</li>
           <li>Schottechniek introduceren met doeltjes</li>
+          <li>Donderdag: zwemtraining met starts/wendingen en sprintintervallen</li>
         </ul>
       </div>
 
       <div class="week-card">
         <div class="week-head">
           <h3>Week 4 &middot; Wedstrijdvorm &amp; spelinzicht</h3>
-          <div class="week-dates"><button type="button" class="chip" data-date="2026-09-22">Di 22 sep</button><button type="button" class="chip" data-date="2026-09-26">Za 26 sep</button></div>
+          <div class="week-dates"><button type="button" class="chip" data-date="2026-09-22">Di 22 sep</button><button type="button" class="chip" data-date="2026-09-24">Do 24 sep</button><button type="button" class="chip" data-date="2026-09-26">Za 26 sep</button></div>
         </div>
         <p class="week-focus">Partijvormen met doel, regels herhalen richting competitie.</p>
         <ul class="week-points">
           <li>Partijtjes met doeltjes, volledige spelregels toepassen</li>
           <li>Basisregels herhalen: uitsluiting, vrije worp</li>
           <li>Evaluatiemoment per speler op basis van de tracker</li>
+          <li>Donderdag: langere duurset zwemmen, richting wedstrijdconditie</li>
         </ul>
       </div>
     </div>
@@ -328,7 +334,7 @@
 
   <section class="panel" id="panel-spelers" role="tabpanel" aria-labelledby="tab-btn-spelers" hidden>
     <h2 class="section-title">Spelers &amp; voortgang</h2>
-    <p class="section-note">Vul namen in tijdens of na de training. Wijzigingen worden lokaal in deze browser bewaard (localStorage) &mdash; open het bestand steeds vanaf dezelfde computer/browser om je gegevens terug te zien.</p>
+    <p class="section-note">Vul namen in tijdens of na de training. Wijzigingen worden automatisch gesynchroniseerd tussen alle trainers die deze pagina open hebben.</p>
 
     <div class="toolbar">
       <button class="btn" id="add-player">+ Speler toevoegen</button>
@@ -383,6 +389,17 @@
       ]
     },
     {
+      date:"2026-09-03", label:"Do 3/9", time:"18:00–19:00", weekTheme:"Terug in het water",
+      note:"Losse zwemtraining, geen bal of doeltjes. Puur lange banen zwemmen om conditie op te bouwen, rustig beginnen.",
+      materials:["Geen materiaal nodig — puur baanzwemmen", "Eventueel plankje/pull-buoy voor wie dat prettig vindt"],
+      blocks:[
+        {time:"18:00", title:"Inzwemmen", desc:"Rustig doorzwemmen, om en om crawl en rugslag, laag tempo.", tag:"10 min"},
+        {time:"18:10", title:"Techniekdrills", desc:"Armslag- en ademhalingsoefeningen met plankje, korte lengtes.", tag:"15 min"},
+        {time:"18:25", title:"Duurzwemmen", desc:"Doorlopend banen zwemmen op eigen tempo, geleidelijk opbouwend, geen wedstrijdje.", tag:"25 min"},
+        {time:"18:50", title:"Uitzwemmen", desc:"Rustig afzwemmen, laag tempo.", tag:"10 min"}
+      ]
+    },
+    {
       date:"2026-09-05", label:"Za 5/9", time:"07:30–08:30", weekTheme:"Terug in het water",
       note:"Tweede training van de week, 60 minuten. Bouw voort op dinsdag: iets meer volume in zwemmen en watertrappen, plus de eerste kleine partijvorm zonder doel.",
       materials:["4 waterpoloballen","Geen doeltjes","Eventueel een boei/plankje voor wie moeite heeft met watertrappen"],
@@ -405,6 +422,17 @@
         {time:"18:15", title:"Watertrappen & sprintvariatie", desc:"3× 1 min benen om-en-om + 2× sprint van 5m, opbouwend tempo.", tag:"10 min · per baan"},
         {time:"18:25", title:"Passen/vangen onder lichte druk", desc:"Groepjes van 3: één speler probeert de pass te onderscheppen (lichte druk), rouleren van rol.", tag:"15 min · 1 bal per groepje"},
         {time:"18:40", title:"Afsluiter: kleine partij 3v3", desc:"Zonder doel, focus op het passen onder druk toepassen dat net geoefend is.", tag:"5 min"}
+      ]
+    },
+    {
+      date:"2026-09-10", label:"Do 10/9", time:"18:00–19:00", weekTheme:"Zwemtechniek & bal onder controle",
+      note:"Losse zwemtraining, geen bal of doeltjes. Focus op polocrawl (hoofd boven water) in intervalvorm.",
+      materials:["Geen materiaal nodig — puur baanzwemmen"],
+      blocks:[
+        {time:"18:00", title:"Inzwemmen", desc:"Rustig doorzwemmen, om en om crawl en rugslag.", tag:"10 min"},
+        {time:"18:10", title:"Polocrawl-techniek", desc:"Drills gericht op hoofd boven water houden, korte lengtes met feedback.", tag:"15 min"},
+        {time:"18:25", title:"Intervalset", desc:"Om de lengte wisselen tussen polocrawl en gewone crawl, opbouwend tempo.", tag:"25 min"},
+        {time:"18:50", title:"Uitzwemmen", desc:"Rustig afzwemmen.", tag:"10 min"}
       ]
     },
     {
@@ -433,6 +461,17 @@
       ]
     },
     {
+      date:"2026-09-17", label:"Do 17/9", time:"18:00–19:00", weekTheme:"Positiespel & samenspel",
+      note:"Losse zwemtraining, geen bal of doeltjes. Starts, wendingen en sprintintervallen.",
+      materials:["Geen materiaal nodig — puur baanzwemmen"],
+      blocks:[
+        {time:"18:00", title:"Inzwemmen", desc:"Rustig doorzwemmen, om en om crawl en rugslag.", tag:"10 min"},
+        {time:"18:10", title:"Starts & wendingen", desc:"Duiken vanaf de kant en tikken/wenden oefenen, korte lengtes.", tag:"15 min"},
+        {time:"18:25", title:"Sprintintervallen", desc:"Herhaalde sprints over een baanlengte met rust ertussen, opbouwend aantal herhalingen.", tag:"25 min"},
+        {time:"18:50", title:"Uitzwemmen", desc:"Rustig afzwemmen.", tag:"10 min"}
+      ]
+    },
+    {
       date:"2026-09-19", label:"Za 19/9", time:"07:30–08:30", weekTheme:"Positiespel & samenspel",
       note:"Basisverdediging (mandekking) erbij, schieten vanuit posities en de eerste partijvorm met doel.",
       materials:["4 waterpoloballen","2 doeltjes","Cappen handig voor het herkennen van verdedigingsparen"],
@@ -457,6 +496,17 @@
       ]
     },
     {
+      date:"2026-09-24", label:"Do 24/9", time:"18:00–19:00", weekTheme:"Wedstrijdvorm & spelinzicht",
+      note:"Losse zwemtraining, geen bal of doeltjes. Langere duurset, richting wedstrijdconditie.",
+      materials:["Geen materiaal nodig — puur baanzwemmen"],
+      blocks:[
+        {time:"18:00", title:"Inzwemmen", desc:"Rustig doorzwemmen, om en om crawl en rugslag.", tag:"10 min"},
+        {time:"18:10", title:"Techniek", desc:"Afwisselend crawl en rugslag, aandacht voor rustige, efficiënte slag.", tag:"15 min"},
+        {time:"18:25", title:"Duurset", desc:"Langere, doorlopende set op een pittiger tempo dan begin september.", tag:"25 min"},
+        {time:"18:50", title:"Uitzwemmen", desc:"Rustig afzwemmen.", tag:"10 min"}
+      ]
+    },
+    {
       date:"2026-09-26", label:"Za 26/9", time:"07:30–08:30", weekTheme:"Wedstrijdvorm & spelinzicht",
       note:"Laatste training van de maand: vrije worp en uitsluiting oefenen, gevolgd door een volledige wedstrijdsimulatie.",
       materials:["4 waterpoloballen","2 doeltjes","Cappen","Fluitje, indien beschikbaar"],
@@ -472,8 +522,28 @@
 
   var state = null;
   var saveTimer = null;
+  var pushTimer = null;
+  var lastSentJSON = null;
   var currentSessionIndex = 0;
   var STORAGE_KEY = "o12-trainingsplan-spelers-v2";
+
+  // Vul deze in met je eigen Firebase-config (zie firebase-setup wizard).
+  // Blijft dit op REPLACE_ME staan, dan valt de tracker terug op localStorage
+  // (per browser, niet gesynchroniseerd).
+  var firebaseConfig = {
+    apiKey: "AIzaSyCp-Q_XMFh5D54gFgn2bAuhPa6dvAbGW2E",
+    authDomain: "project-9008729801441566828.firebaseapp.com",
+    databaseURL: "https://project-9008729801441566828-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "project-9008729801441566828",
+    storageBucket: "project-9008729801441566828.firebasestorage.app",
+    messagingSenderId: "876730112690",
+    appId: "1:876730112690:web:b67211e5bdc33aee5187ab"
+  };
+  var playersRef = null;
+  if(firebaseConfig.apiKey !== "REPLACE_ME" && typeof firebase !== "undefined"){
+    firebase.initializeApp(firebaseConfig);
+    playersRef = firebase.database().ref("players");
+  }
 
   var ROSTER = [
     ["Evy K","O12-2"], ["Finn","O12-2"], ["Quint","O12-2"], ["Jasmijn","O12-2"],
@@ -507,11 +577,24 @@
   }
 
   function saveState(){
-    try{
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      setStatus("Opgeslagen ✓");
-    }catch(e){
-      setStatus("Opslaan mislukt (lokale opslag niet beschikbaar)");
+    if(playersRef){
+      setStatus("Synchroniseren…");
+      if(pushTimer) clearTimeout(pushTimer);
+      pushTimer = setTimeout(function(){
+        lastSentJSON = JSON.stringify(state.players);
+        playersRef.set(state.players).then(function(){
+          setStatus("Gesynchroniseerd ✓");
+        }).catch(function(){
+          setStatus("Synchroniseren mislukt");
+        });
+      }, 400);
+    }else{
+      try{
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        setStatus("Opgeslagen ✓");
+      }catch(e){
+        setStatus("Opslaan mislukt (lokale opslag niet beschikbaar)");
+      }
     }
     if(saveTimer) clearTimeout(saveTimer);
     saveTimer = setTimeout(function(){ setStatus(""); }, 2000);
@@ -712,8 +795,26 @@
     document.getElementById("players-body").addEventListener("click", onTableClick);
     document.getElementById("players-body").addEventListener("change", onTableChange);
 
-    state = loadState();
-    renderRows();
+    if(playersRef){
+      playersRef.on("value", function(snapshot){
+        var raw = snapshot.val();
+        // ponytail: skips a diff/patch render, so a rerender lands mid-keystroke
+        // if two trainers edit at the same exact moment. Fine for a small team;
+        // patch-by-field if that ever actually bites.
+        if(JSON.stringify(raw) === lastSentJSON) return;
+        if(!raw){
+          state = {players: seedPlayers()};
+          renderRows();
+          saveState();
+          return;
+        }
+        state = {players: Array.isArray(raw) ? raw : Object.keys(raw).sort().map(function(k){ return raw[k]; })};
+        renderRows();
+      });
+    }else{
+      state = loadState();
+      renderRows();
+    }
   }
 
   document.addEventListener("DOMContentLoaded", boot);
